@@ -64,3 +64,4 @@ kayak <- c("Kayak",	"2,839",	"$3,567.13","208","$1,123.53","$233,694.00","$230,1
 total_ads <- data.frame(rbind(kayak),row.names = NULL)
 colnames(total_ads) <- cols
 
+# test

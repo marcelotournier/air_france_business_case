@@ -64,4 +64,28 @@ kayak <- c("Kayak",	"2,839",	"$3,567.13","208","$1,123.53","$233,694.00","$230,1
 total_ads <- data.frame(rbind(kayak),row.names = NULL)
 colnames(total_ads) <- cols
 
-# test
+################################
+# KEYWORD STRATEGIES
+
+
+#
+#Questions : 
+
+#- How to use assist keywords to lead consumers to a desired behavior?
+#- Should keywords be added or dropped from the campaign? 
+#- Should campaign tactics or copy be adjusted to improve campaign performance?
+
+# COUNTING KEYWORDS
+
+keyword_match <- # Get a summary table with counts and sums of booking vol per US-Global Scope
+  AF %>% #get the AF dataframe...
+  group_by(Match.Type) %>% #Group by Publisher name
+  summarise(Sum.Bookings = sum(Total.Volume.of.Bookings), # Create columns for sum of volume
+            Amount = sum(Amount)) # Create columns for sum of amount
+
+
+#regx experiments:
+grep(x=AF$Keyword,pattern = "paris",value=T)
+grep(x=AF$Keyword,pattern = "paris",value=F)
+grepl(x=AF$Keyword,pattern = "paris") & grepl(x=AF$Keyword,pattern = "france")
+grepl(x=AF$Keyword,pattern = "paris")

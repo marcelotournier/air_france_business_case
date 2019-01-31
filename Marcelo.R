@@ -89,3 +89,17 @@ grep(x=AF$Keyword,pattern = "paris",value=T)
 grep(x=AF$Keyword,pattern = "paris",value=F)
 grepl(x=AF$Keyword,pattern = "paris") & grepl(x=AF$Keyword,pattern = "france")
 grepl(x=AF$Keyword,pattern = "paris")
+
+
+# keyword strategy - broad vs specific?
+# We need packages:
+library(tidyr)
+library(dplyr)
+
+keyword_strategy <- # Get a summary table 
+  AF %>% #get the AF dataframe...
+  group_by(Match.Type) %>% #Group by Publisher name
+  summarise(Sum.Bookings = sum(Total.Volume.of.Bookings), # Create columns for sum of volume
+            Amount.Bookings = sum(Amount), # Create columns for sum of amount
+            Count.Bookings = n()) # and another column for count of bookings
+

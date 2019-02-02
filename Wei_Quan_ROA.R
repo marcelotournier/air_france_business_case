@@ -55,3 +55,49 @@ Global_Cost <- sum(AF$`Total Cost`[which(AF$`Publisher ID` == "K2003" | AF$`Publ
 Global_Revenue <- sum(AF$Amount[which(AF$`Publisher ID` == "K2003" | AF$`Publisher ID` == "K1175" | AF$`Publisher ID` == "K1123")])
 Global_ROA <- Global_Revenue / Global_Cost
 
+
+Air_France_Brand_French_Destinations_ROA <- sum(AF$Amount[which(AF$Campaign == "Air France Brand & French Destinations")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Air France Brand & French Destinations")])
+
+Air_France_Branded_ROA <- sum(AF$Amount[which(AF$Campaign == "Air France Branded")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Air France Branded")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Business Class")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Business Class")])
+
+French_Destinations_ROA <- sum(AF$Amount[which(AF$Campaign == "French Destinations")]) / sum(AF$`Total Cost`[which(AF$Campaign == "French Destinations")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "General Terms")]) / sum(AF$`Total Cost`[which(AF$Campaign == "General Terms")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Geo Targeted Atlanta")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Geo Targeted Atlanta")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Geo Targeted Boston")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Geo Targeted Boston")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Geo Targeted Chicago")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Geo Targeted Chicago")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Geo Targeted Cincinnati")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Geo Targeted Cincinnati")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Geo Targeted DC")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Geo Targeted DC")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Geo Targeted Detroit")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Geo Targeted Detroit")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Geo Targeted Houston")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Geo Targeted Houston")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Geo Targeted Los Angeles")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Geo Targeted Los Angeles")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Geo Targeted Miami")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Geo Targeted Miami")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Geo Targeted New York")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Geo Targeted New York")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Geo Targeted Philadelphia")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Geo Targeted Philadelphia")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Geo Targeted San Francisco")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Geo Targeted San Francisco")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Geo Targeted Seattle")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Geo Targeted Seattle")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Google_Yearlong 2006")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Google_Yearlong 2006")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Outside Western Europe")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Outside Western Europe")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Paris & France Terms")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Paris & France Terms")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Western Europe Destinations")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Western Europe Destinations")])
+
+Business_Class_ROA <- sum(AF$Amount[which(AF$Campaign == "Unassigned")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Unassigned")])

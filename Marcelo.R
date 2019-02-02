@@ -59,10 +59,11 @@ colnames(Total_Bookings_per_Publisher) <- c("Publisher","Scope","Sum.Bookings","
 
 # KAYAK INFO: 
 cols <- c("Search Engine"	,"Clicks",	"Media Cost",	"Total Bookings"	,
-  "Avg Ticket"	,"Total Revenue",	"Net Revenue")
-kayak <- c("Kayak",	"2,839",	"$3,567.13","208","$1,123.53","$233,694.00","$230,126.87")
-kayak_ads <- data.frame(rbind(kayak),row.names = NULL)
-colnames(kayak_ads) <- cols
+          "Avg Ticket"	,"Total Revenue",	"Net Revenue")
+kayak <- c(NA,	2839,	3567.13,208,1123.53,233694,230126.87)
+word_strategy <- data.frame(rbind(kayak),row.names = NULL)
+word_strategy[,1] <- "Kayak"
+colnames(word_strategy) <- cols
 
 ################################
 # KEYWORD STRATEGIES
@@ -132,9 +133,9 @@ install.packages("wordcloud") # word-cloud generator
 install.packages("RColorBrewer") # color palettes
 # Load
 library(tm)
-library("SnowballC")
-library("wordcloud")
-library("RColorBrewer")
+library(SnowballC)
+library(wordcloud)
+library(RColorBrewer)
 
 #text <- str_split(AF$Keyword, " ")
 #docs <- Corpus(VectorSource(text))
@@ -306,4 +307,114 @@ ggplot(data=d_has[1:20,], aes(reorder(word,-freq), freq))+
   labs(title = "Air France: Top 20 keywords with bookings")+
   xlab("")+
   theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 12))
+
+####################################################################################################
+####################################################################################################
+####################################################################################################
+####################################################################################################
+
+# Business Analysis of Keywords:
+
+# Aggregated data to compare with kayak:
+library(dplyr)
+library(tidyr)
+library(tm)
+library(SnowballC)
+library(wordcloud)
+library(RColorBrewer)
+
+# KAYAK INFO: 
+cols <- c("Keyword"	,"Clicks",	"Media Cost",	"Total Bookings"	,
+          "Avg Ticket"	,"Total Revenue",	"Net Revenue")
+kayak <- c(NA,	2839,	3567.13,208,1123.53,233694,230126.87)
+word_strategy <- data.frame(rbind(kayak),row.names = NULL)
+word_strategy[,1] <- "Kayak (BENCHMARK)"
+colnames(word_strategy) <- cols
+
+join_airfrance <- gsub(x=AF$Keyword,pattern = "air france",replacement = "airfrance")
+docs <- Corpus(VectorSource(join_airfrance))
+#inspect(docs)
+
+# Text transformation:
+toSpace <- content_transformer(function (x , pattern ) gsub(pattern, " ", x))
+
+#docs <- tm_map(docs, toSpace, "/")
+#docs <- tm_map(docs, toSpace, "@")
+#docs <- tm_map(docs, toSpace, "\\|")
+
+
+# text cleaning:
+
+# Convert the text to lower case
+docs <- tm_map(docs, content_transformer(tolower))
+# Remove numbers
+#docs <- tm_map(docs, removeNumbers)
+# Remove english common stopwords
+docs <- tm_map(docs, removeWords, stopwords("english"))
+# Remove your own stop word
+
+# Remove noisy keywords:
+docs <- tm_map(docs, removeWords, c("franc", "par","tou")) 
+# Remove punctuations
+#docs <- tm_map(docs, removePunctuation)
+# Eliminate extra white spaces
+#docs <- tm_map(docs, stripWhitespace)
+# Text stemming
+# docs <- tm_map(docs, stemDocument)
+
+dtm <- TermDocumentMatrix(docs)
+m <- as.matrix(dtm)
+v <- sort(rowSums(m),decreasing=TRUE)
+d <- data.frame(word = names(v),freq=v)
+
+
+
+# get a vector with kws which appear more than 100 times:
+#top_keywords <- as.character(d[d$freq>100,'word'])
+
+# or get a vector with all kws:
+top_keywords <- as.character(d[,'word'])
+
+# Create a loop to:
+for (i in 1:length(top_keywords)){
+  # print(top_keywords[i]) # for debugging
+  
+  #1. get a dataframe with each word
+  AF_kw <- AF[grep(x=AF$Keyword,pattern = top_keywords[i],fixed = T),]
+  
+  #2. summarize the values to match "word_strategy":
+  word_strategy[i+1,1] <- top_keywords[i]
+  
+  # number of clicks sum(Clicks)
+  word_strategy[i+1,2] <- sum(AF_kw$Clicks)
+  
+  # media cost sum(Total.Cost)
+  word_strategy[i+1,3] <- sum(AF_kw$Total.Cost)
+  
+  # total sum of bookings sum(Total.Volume.of.Bookings)
+  word_strategy[i+1,4] <- sum(AF_kw$Total.Volume.of.Bookings)
+  
+  # total revenue sum(Amount)
+  word_strategy[i+1,6] <- sum(AF_kw$Amount)
+  
+  # average ticket revenue -> calculated field afterwards
+  word_strategy[i+1,5] <- word_strategy[i+1,6]/word_strategy[i+1,4]
+  
+  # net revenue -> calculated field afterwards 
+  word_strategy[i+1,7] <- word_strategy[i+1,6]-word_strategy[i+1,3]
+  
+  #print(word_strategy) #for debugging
+  # add the results to word_strategy as a new row
+  
+}
+
+# new column - Marketing Pct of Revenue
+word_strategy$`Marketing Pct of Revenue` <- round(word_strategy$`Media Cost`/ word_strategy$`Total Revenue`,2)
+
+View(word_strategy)
+
+
+
+
+
 

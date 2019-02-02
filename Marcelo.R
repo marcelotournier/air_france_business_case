@@ -408,8 +408,15 @@ for (i in 1:length(top_keywords)){
   
 }
 
-# new column - Marketing Pct of Revenue
-word_strategy$`Marketing Pct of Revenue` <- round(word_strategy$`Media Cost`/ word_strategy$`Total Revenue`,2)
+# new column - Marketing ROA
+word_strategy$ROA <- round(word_strategy$`Total Revenue`/word_strategy$`Media Cost`,2)
+
+# new column -  Cost in Pct of total marketing budget
+word_strategy$`Cost Pct Mkt budget` <- round(word_strategy$`Media Cost`/(sum(AF$Total.Cost)+word_strategy[1,3]),2)
+
+# new column -  Pct total revenue per keyword
+word_strategy$`Pct total revenue` <- round(word_strategy$`Total Revenue`/(sum(AF$Amount)+word_strategy[1,6]),2)
+
 
 View(word_strategy)
 

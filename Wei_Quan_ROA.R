@@ -27,7 +27,7 @@ MSN_Global_ROA <- MSN_Global_Revenue / MSN_Global_Cost
 
 MSN_Cost <- sum(AF$`Total Cost`[which(AF$`Publisher Name`=="MSN - Global" | AF$`Publisher Name`=="MSN - US") ])
 MSN_Revenue <- sum(AF$Amount[which(AF$`Publisher Name`=="MSN - Global" | AF$`Publisher Name`=="MSN - US")])
-MSN_ROA <- Google_Revenue / Google_Cost
+MSN_ROA <- MSN_Revenue / MSN_Cost
 
 Overture_US_Cost <- sum(AF$`Total Cost`[which(AF$`Publisher Name`=="Overture - US")])
 Overture_US_Revenue <- sum(AF$Amount[which(AF$`Publisher Name`=="Overture - US")])
@@ -54,6 +54,11 @@ US_ROA <- US_Revenue / US_Cost
 Global_Cost <- sum(AF$`Total Cost`[which(AF$`Publisher ID` == "K2003" | AF$`Publisher ID` == "K1175" | AF$`Publisher ID` == "K1123")])
 Global_Revenue <- sum(AF$Amount[which(AF$`Publisher ID` == "K2003" | AF$`Publisher ID` == "K1175" | AF$`Publisher ID` == "K1123")])
 Global_ROA <- Global_Revenue / Global_Cost
+
+ROA <- matrix(c(Google_Global_ROA, MSN_Global_ROA, Overture_Global_ROA, "NA", Global_ROA, Google_US_ROA, MSN_US_ROA, Overture_US_ROA, Yahoo_US_ROA, US_ROA, Google_ROA, MSN_ROA, Overture_ROA, Yahoo_ROA, ROA_Whole), ncol = 3, nrow = 5)
+colnames(ROA) <- c("Global", "US", "Total")
+rownames(ROA) <- c("Google", "MSN", "Overture", "Yahoo", "Total")
+ROA <- as.table(ROA)
 
 
 Air_France_Brand_French_Destinations_ROA <- sum(AF$Amount[which(AF$Campaign == "Air France Brand & French Destinations")]) / sum(AF$`Total Cost`[which(AF$Campaign == "Air France Brand & French Destinations")])

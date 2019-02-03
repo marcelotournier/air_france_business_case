@@ -420,8 +420,12 @@ word_strategy$`Pct total revenue` <- round(word_strategy$`Total Revenue`/(sum(AF
 
 View(word_strategy)
 
+# Looking at the campaigns who generated > $ 10,000 in revenue AND had an ROA > 1:
+word_focus <- word_strategy[word_strategy$`Net Revenue`>10000 & word_strategy$ROA>1,]
+View(word_focus)
 
+# Looking at the worst campaigns, with ROA < or = to 1:
+word_junk <- word_strategy[word_strategy$ROA<=1,]
+View(word_junk)
 
-
-
-
+# RECOMMENDATION - LIST OF 302 KEYWORDS TO AVOID!!!!

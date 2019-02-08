@@ -328,7 +328,8 @@ cols <- c("Keyword"	,"Clicks",	"Media Cost",	"Total Bookings"	,
           "Avg Ticket"	,"Total Revenue",	"Net Revenue")
 kayak <- c(NA,	2839,	3567.13,208,1123.53,233694,230126.87)
 word_strategy <- data.frame(rbind(kayak),row.names = NULL)
-word_strategy[,1] <- "Kayak (BENCHMARK)"
+word_strategy[,1] <- "Kayak"
+#word_strategy[,1] <- "Kayak (BENCHMARK)"
 colnames(word_strategy) <- cols
 
 join_airfrance <- gsub(x=AF$Keyword,pattern = "air france",replacement = "airfrance")
@@ -423,9 +424,93 @@ View(word_strategy)
 # Looking at the campaigns who generated > $ 10,000 in revenue AND had an ROA > 1:
 word_focus <- word_strategy[word_strategy$`Net Revenue`>10000 & word_strategy$ROA>1,]
 View(word_focus)
+# Sort by net revenue:
+word_focus <- word_focus[ order(-word_focus$`Net Revenue`), ]
 
 # Looking at the worst campaigns, with ROA < or = to 1:
 word_junk <- word_strategy[word_strategy$ROA<=1,]
 View(word_junk)
+# Sort by net revenue:
+word_junk <- word_junk[ order(word_junk$`Net Revenue`), ]
+
+top_keywords <- rbind(word_focus[1:10,],word_junk[1:10,])
 
 # RECOMMENDATION - LIST OF 302 KEYWORDS TO AVOID!!!!
+
+#plot correlation cost vs revenue general
+library(ggplot2)
+ggplot(AF, aes(log(AF$Total.Cost),log(AF$Amount)))+
+  geom_point(color=sample(colours(),1))+
+  labs(title = "Correlation - Costs and Revenues")+
+  xlab("Total cost of keyword")+
+  ylab("Revenue")
+  
+
+plot(log(AF$Total.Cost),log(AF$Amount))
+library(ggplot2)
+PLT <- word_focus
+ggplot(PLT, aes(log(PLT$`Media Cost`),log(PLT$`Total Revenue`)))+
+  geom_point(color="blue 2")+
+  #geom_text(aes(label=Keyword), size=4,hjust=runif(1), vjust=runif(1))+
+  geom_label(aes(label=Keyword),hjust=0, vjust=0)+
+  labs(title = "Good words - Costs and Revenues")+
+  xlab("(log)Total cost of keyword")+
+  ylab("(log)Revenue")
+
+PLT <- word_junk
+ggplot(PLT, aes(log(PLT$`Media Cost`),log(PLT$`Total Revenue`)))+
+  geom_point(color="red 2")+
+  labs(title = "Bad words - Costs and Revenues")+
+  xlab("(log)Total cost of keyword")+
+  ylab("(log)Revenue")
+
+
+library(grid) 
+library(gridExtra) 
+
+plot_table <- PUT_HERE
+
+grid.table(matrix(plot_table))
+
+### WORDCLOUD - GOOD WORDS
+set.seed(1234)
+wordcloud(words = word_focus$Keyword,scale=c(6,1), freq = word_focus$`Net Revenue`, min.freq = 1,
+          max.words=200, random.order=FALSE, 
+          colors=brewer.pal(8, "Dark2"))
+
+
+## PLOT REVENUES - ROA
+dtm <- data.frame(month = factor(factor(top_keywords$Keyword)), value = top_keywords$`Net Revenue`)
+dtm$colour <- ifelse(dtm$value < 0, "firebrick1",
+                     "steelblue")
+dtm$hjust <- ifelse(dtm$value > 0, 1.3, -0.3)
+g<- ggplot(dtm, aes(month, value, label = month,
+                hjust = hjust)) + geom_text(aes(y = 0,
+                                                colour = colour)) + geom_bar(stat = "identity",
+                                                                             aes(fill = colour))
+g + coord_flip() + labs(x = "", y = "") +
+  scale_x_discrete(breaks = NULL) + theme_bw() +
+  theme(legend.position='none')
+
+ggplot(data=word_focus[1:20,], 
+       aes(reorder(Keyword,-`Net Revenue`), `Net Revenue`))+
+  geom_col(fill="blue 2")+
+  labs(title = "Air France: Top 20 keywords with bookings")+
+  xlab("")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 12))
+
+ggplot(data=word_junk[1:20,], 
+       aes(reorder(Keyword,`Net Revenue`), `Net Revenue`))+
+  geom_col(fill="red 1")+
+  labs(title = "Air France: Worst 20 keywords with bookings")+
+  xlab("")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 12))
+
+##ROA
+ggplot(data=word_focus[1:20,], 
+       aes(reorder(Keyword,-ROA), ROA))+
+  geom_col(fill="salmon")+
+  labs(title = "Air France: ROA from specific keywords")+
+  xlab("")+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1,size = 12))
+
